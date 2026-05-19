@@ -96,6 +96,24 @@ describe("prepareRunConfig", () => {
     expect(prepared.claudeArgs).toContain("claude-sonnet-4-20250514");
   });
 
+  test("should include --dangerously-skip-permissions when enabled", () => {
+    const options: ClaudeOptions = {
+      dangerouslySkipPermissions: true,
+    };
+    const prepared = prepareRunConfig("/tmp/test-prompt.txt", options);
+
+    expect(prepared.claudeArgs).toContain("--dangerously-skip-permissions");
+  });
+
+  test("should not include --dangerously-skip-permissions when false", () => {
+    const options: ClaudeOptions = {
+      dangerouslySkipPermissions: false,
+    };
+    const prepared = prepareRunConfig("/tmp/test-prompt.txt", options);
+
+    expect(prepared.claudeArgs).not.toContain("--dangerously-skip-permissions");
+  });
+
   test("should use provided prompt path", () => {
     const options: ClaudeOptions = {};
     const prepared = prepareRunConfig("/custom/prompt/path.txt", options);
